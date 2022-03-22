@@ -143,19 +143,16 @@
       }
 
       button.add-row {
-        background-color: red;
-        color: white;
         padding: 10px 22px;
+        background-color: red;
+        color: #fff;
+        font-size: 20px;
         border-radius: 50px;
-        cursor: pointer;
-        font-size: 18px;
-      }
-      button.add-row:hover {
-        background-color: darkred;
+        margin-bottom: 48px;
       }
 
       button.add-row i {
-        margin-left: 12px;
+        margin-left: 8px;
       }
     </style>
 
@@ -180,48 +177,12 @@
               <th>Action</th>
             </tr>
           </thead>
-          <tbody>
-            <!-- first row -->
-            <tr>
-              <td>1234</td>
-              <td>John</td>
-              <td>Smith</td>
-              <td>
-                <a class="btn" id="1234"><i class="fa-solid fa-trash-can"></i>Delete</a>
-              </td>
-            </tr>
-            <!-- second row -->
-            <tr>
-              <td>5678</td>
-              <td>Jane</td>
-              <td>Higgins</td>
-              <td>
-                <a class="btn" id="5678"><i class="fa-solid fa-trash-can"></i>Delete</a>
-              </td>
-            </tr>
-            <!-- third row -->
-            <tr>
-              <td>1717</td>
-              <td>Frank</td>
-              <td>Jones</td>
-              <td>
-                <a class="btn" id="1717"><i class="fa-solid fa-trash-can"></i>Delete</a>
-              </td>
-            </tr>
-            <!-- fourth row -->
-            <tr>
-              <td>2121</td>
-              <td>Mary</td>
-              <td>Dwyer</td>
-              <td>
-                <a class="btn" id="2121"><i class="fa-solid fa-trash-can"></i>Delete</a>
-              </td>
-            </tr>
-          </tbody>
+          <tbody id="studentData"></tbody>
         </table>
+
         <p>
-          <button class="add-row" onclick="addRow()">
-            Add row <i class="fa-solid fa-circle-plus"></i>
+          <button class="add-row" id="btn_populate" onclick="populateTable()">
+            Populate Table <i class="fa-solid fa-circle-plus"></i>
           </button>
         </p>
       </div>
@@ -245,40 +206,42 @@
         console.log('Clicked button: ' + btn_id);
         const rows = document.querySelectorAll('#myTable tr');
         for (let i = rows.length; i--; ) {
-          if (rows[i].innerHTML.includes(`id="${btn_id}"`)) {
+          if (rows[i].innerHTML.includes(btn_id)) {
             rows[i].parentNode.removeChild(rows[i]);
           }
         }
       }
 
-      function getRandomInt(min, max) {
-        min = Math.ceil(min);
-        max = Math.floor(max);
-        return Math.floor(Math.random() * (max - min + 1) + min);
-      }
+      const arrStudentData = [
+        { id: '1224', firstname: 'John', lastname: 'Smith' },
+        { id: '5678', firstname: 'Jane', lastname: 'Higgins' },
+        { id: '1717', firstname: 'Frank', lastname: 'Jones' },
+        { id: '2121', firstname: 'Mary', lastname: 'Dwyer' },
+      ];
 
-      function addRow() {
-        let table = document.getElementById('myTable');
-        // Create an empty <tr> element and add it to the last position of the table
-        let row = table.insertRow(-1);
-        // Insert new empty cells (<td> elements) in new <tr> element:
-        let cell1 = row.insertCell(0);
-        let cell2 = row.insertCell(1);
-        let cell3 = row.insertCell(2);
-        let cell4 = row.insertCell(3);
-
-        // Add content to the new cells:
-        let student_id = getRandomInt(4000, 9000);
-        cell1.innerText = student_id;
-        cell2.innerText = 'First Name here';
-        cell3.innerText = 'Last Name here';
-
-        cell4.innerHTML =
-          '<a class="btn" id="' +
-          student_id +
-          '" onclick="deleteRow(' +
-          student_id +
-          ')"><i class="fa-solid fa-trash-can"></i>Delete</a>';
+      function populateTable() {
+        var tableContent = '';
+        let delBtn = 'Delete';
+        for (var i in arrStudentData) {
+          tableContent += '<tr>';
+          tableContent +=
+            '<td>' +
+            arrStudentData[i].id +
+            '</td>' +
+            '<td>' +
+            arrStudentData[i].firstname +
+            '</td>' +
+            '<td>' +
+            arrStudentData[i].lastname +
+            '</td>' +
+            '<td><a class="btn" onclick="deleteRow(' +
+            arrStudentData[i].id +
+            ')"><i class="fa-solid fa-trash-can"></i>Delete</a></td>';
+          tableContent += '</tr>';
+        }
+        document.getElementById('studentData').innerHTML = tableContent;
+        document.getElementById('btn_populate').innerHTML =
+          'Refresh Table <i class="fa-solid fa-circle-plus"></i>';
       }
     </script>
   </body>
